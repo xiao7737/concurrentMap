@@ -68,5 +68,18 @@ func CreateConcurrentMap(numOfShard int) *ConcurrentMap {
 
 // Set is to set kv
 func (m *ConcurrentMap) Set(key PartitionKey, value interface{}) {
+	sm := m.getShard(key)
+	sm.set(key, value)
+}
 
+// Get is to get kv and return whether the key exists
+func (m *ConcurrentMap) Get(key PartitionKey) (value interface{}, exists bool) {
+	sm := m.getShard(key)
+	return sm.get(key)
+}
+
+// Del is to delete the key
+func (m *ConcurrentMap) Del(key PartitionKey) {
+	sm := m.getShard(key)
+	sm.del(key)
 }
