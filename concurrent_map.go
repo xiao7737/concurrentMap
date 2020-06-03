@@ -26,29 +26,29 @@ func createShardMap() *shardMap {
 }
 
 // add Lock for set kv
-func (sm *shardMap) set(key PartitionKey, value interface{}) {
+func (s *shardMap) set(key PartitionKey, value interface{}) {
 	keyVal := key.Value()
-	sm.lock.Lock()
-	sm.m[keyVal] = value
-	sm.lock.Unlock()
+	s.lock.Lock()
+	s.m[keyVal] = value
+	s.lock.Unlock()
 }
 
 // add RLock for get key
-func (sm *shardMap) get(key PartitionKey) (interface{}, bool) {
+func (s *shardMap) get(key PartitionKey) (interface{}, bool) {
 	keyVal := key.Value()
-	sm.lock.RLock()
-	value, exists := sm.m[keyVal]
-	sm.lock.RUnlock()
+	s.lock.RLock()
+	value, exists := s.m[keyVal]
+	s.lock.RUnlock()
 	return value, exists
 
 }
 
 // add Lock for del key
-func (sm *shardMap) del(key PartitionKey) {
+func (s *shardMap) del(key PartitionKey) {
 	keyVal := key.Value()
-	sm.lock.Lock()
-	delete(sm.m, keyVal)
-	sm.lock.Unlock()
+	s.lock.Lock()
+	delete(s.m, keyVal)
+	s.lock.Unlock()
 }
 
 // get the shard for key
@@ -68,18 +68,20 @@ func CreateConcurrentMap(numOfShard int) *ConcurrentMap {
 
 // Set is to set kv
 func (m *ConcurrentMap) Set(key PartitionKey, value interface{}) {
-	sm := m.getShard(key)
-	sm.set(key, value)
+	shardMap := m.getShard(key)
+	shardMap.set(key, value)
 }
 
 // Get is to get kv and return whether the key exists
 func (m *ConcurrentMap) Get(key PartitionKey) (value interface{}, exists bool) {
-	sm := m.getShard(key)
-	return sm.get(key)
+	shardMap := m.getShard(key)
+	return shardMap.get(key)
 }
 
 // Del is to delete the key
 func (m *ConcurrentMap) Del(key PartitionKey) {
-	sm := m.getShard(key)
-	sm.del(key)
+	shardMap := m.getShard(key)
+	shardMap.del(key)
 }
+
+// 实现count，exist，upsert
