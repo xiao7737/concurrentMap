@@ -4,6 +4,11 @@ import (
 	"unsafe"
 )
 
+const (
+	c1 uint32 = 0xcc9e2d51
+	c2 uint32 = 0x1b873593
+)
+
 type StringKey struct {
 	value string
 }
@@ -26,7 +31,6 @@ func ConvertStrToStrKey(key string) *StringKey {
 // the algorithm can still give a good random distribution,
 // and the calculation speed of the algorithm is also very fast
 func murmurHash(str string) uint32 {
-	var c1, c2 uint32 = 0xcc9e2d51, 0x1b873593
 
 	data := ([]byte)(str)
 	var h1 uint32 = 37
