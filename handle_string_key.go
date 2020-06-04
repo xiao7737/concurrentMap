@@ -4,20 +4,13 @@ import (
 	"unsafe"
 )
 
-// 对key的hash处理
-
 type StringKey struct {
 	value string
 }
 
-const (
-	c1_32 uint32 = 0xcc9e2d51
-	c2_32 uint32 = 0x1b873593
-)
-
-//返回string类型key的分区key
+// convert key of type string to type int64
 func (s *StringKey) PartitionKey() int64 {
-	return int64(helper(s.value))
+	return int64(murmurHash(s.value))
 }
 
 func (s *StringKey) Value() interface{} {
@@ -28,7 +21,13 @@ func ConvertStrToStrKey(key string) *StringKey {
 	return &StringKey{key}
 }
 
-func helper(str string) uint32 {
+// link：https://github.com/aappleby/smhasher
+// Even if the keys entered are regular,
+// the algorithm can still give a good random distribution,
+// and the calculation speed of the algorithm is also very fast
+func murmurHash(str string) uint32 {
+	var c1, c2 uint32 = 0xcc9e2d51, 0x1b873593
+
 	data := ([]byte)(str)
 	var h1 uint32 = 37
 
@@ -41,12 +40,12 @@ func helper(str string) uint32 {
 	p1 := p + uintptr(4*blocks)
 	for ; p < p1; p += 4 {
 		k1 := *(*uint32)(unsafe.Pointer(p))
-		k1 *= c1_32
-		k1 = (k1 << 15) | (k1 >> 17) // rotl32(k1, 15)
-		k1 *= c2_32
+		k1 *= c1
+		k1 = (k1 << 15) | (k1 >> 17)
+		k1 *= c2
 
 		h1 ^= k1
-		h1 = (h1 << 13) | (h1 >> 19) // rotl32(h1, 13)
+		h1 = (h1 << 13) | (h1 >> 19)
 		h1 = h1*5 + 0xe6546b64
 	}
 
@@ -62,9 +61,9 @@ func helper(str string) uint32 {
 		fallthrough
 	case 1:
 		k1 ^= uint32(tail[0])
-		k1 *= c1_32
+		k1 *= c1
 		k1 = (k1 << 15) | (k1 >> 17)
-		k1 *= c2_32
+		k1 *= c2
 		h1 ^= k1
 	}
 

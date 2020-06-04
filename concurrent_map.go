@@ -93,7 +93,7 @@ func (m *ConcurrentMap) Del(key PartitionKey) {
 	shardMap.del(key)
 }
 
-// 实现count
+// Count is to count the total elements of the concurrentMap
 func (m *ConcurrentMap) Count() (count int) {
 	for i := 0; i < m.numOfShard; i++ {
 		shardMap := m.shard[i]
