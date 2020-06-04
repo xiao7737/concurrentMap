@@ -13,7 +13,8 @@ type shardMap struct {
 	lock sync.RWMutex
 }
 
-// interface of key
+// interface of key, compatible with string and int key
+//
 type PartitionKey interface {
 	Value() interface{}
 	PartitionKey() int64
@@ -51,6 +52,14 @@ func (s *shardMap) del(key PartitionKey) {
 	s.lock.Unlock()
 }
 
+// count the elements of a shard
+func (s *shardMap) count() (count int) {
+	s.lock.RLock()
+	count = len(s.m)
+	s.lock.RUnlock()
+	return count
+}
+
 // get the shard for key
 func (m *ConcurrentMap) getShard(key PartitionKey) *shardMap {
 	shardIndex := key.PartitionKey() % (int64(m.numOfShard))
@@ -84,4 +93,13 @@ func (m *ConcurrentMap) Del(key PartitionKey) {
 	shardMap.del(key)
 }
 
-// 实现count，exist，upsert
+// 实现count
+func (m *ConcurrentMap) Count() (count int) {
+	for i := 0; i < m.numOfShard; i++ {
+		shardMap := m.shard[i]
+		count += shardMap.count()
+	}
+	return count
+}
+
+//exist，添加测试文件
