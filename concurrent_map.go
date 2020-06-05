@@ -1,6 +1,8 @@
 package concurrentMap
 
-import "sync"
+import (
+	"sync"
+)
 
 type ConcurrentMap struct {
 	shard      []*shardMap
@@ -102,4 +104,9 @@ func (m *ConcurrentMap) Count() (count int) {
 	return count
 }
 
-//exist，添加测试文件
+// Exists is to return whether key exists in the map
+func (m *ConcurrentMap) Exists(key PartitionKey) (exists bool) {
+	shardMap := m.getShard(key)
+	_, exists = shardMap.get(key)
+	return exists
+}
