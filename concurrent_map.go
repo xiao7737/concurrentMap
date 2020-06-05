@@ -37,12 +37,12 @@ func (s *shardMap) set(key PartitionKey, value interface{}) {
 }
 
 // add RLock for get key
-func (s *shardMap) get(key PartitionKey) (interface{}, bool) {
+func (s *shardMap) get(key PartitionKey) (value interface{}, exists bool) {
 	keyVal := key.Value()
 	s.lock.RLock()
-	value, exists := s.m[keyVal]
+	value, exists = s.m[keyVal]
 	s.lock.RUnlock()
-	return value, exists
+	return
 
 }
 
@@ -59,7 +59,7 @@ func (s *shardMap) count() (count int) {
 	s.lock.RLock()
 	count = len(s.m)
 	s.lock.RUnlock()
-	return count
+	return
 }
 
 // get the shard for key
@@ -101,12 +101,12 @@ func (m *ConcurrentMap) Count() (count int) {
 		shardMap := m.shard[i]
 		count += shardMap.count()
 	}
-	return count
+	return
 }
 
 // Exists is to return whether key exists in the map
 func (m *ConcurrentMap) Exists(key PartitionKey) (exists bool) {
 	shardMap := m.getShard(key)
 	_, exists = shardMap.get(key)
-	return exists
+	return
 }
