@@ -110,3 +110,5 @@ func (m *ConcurrentMap) Exists(key PartitionKey) (exists bool) {
 	_, exists = shardMap.get(key)
 	return
 }
+
+// 测试文件 + 对比效果
