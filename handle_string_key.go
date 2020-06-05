@@ -22,7 +22,7 @@ func (s *StringKey) Value() interface{} {
 	return s.value
 }
 
-func ConvertStrToStrKey(key string) *StringKey {
+func ConvertStr(key string) *StringKey {
 	return &StringKey{key}
 }
 

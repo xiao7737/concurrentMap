@@ -12,6 +12,6 @@ func (i *Int64Key) Value() interface{} {
 	return i.value
 }
 
-func I64Key(key int64) *Int64Key {
+func ConvertInt64(key int64) *Int64Key {
 	return &Int64Key{key}
 }
