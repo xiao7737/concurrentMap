@@ -6,9 +6,10 @@ go get "github.com/xiao7737/concurrentMap"
 ```
 ### Usage
 ```
-    cm := CreateConcurrentMap(32)
+    // Init map (recommend to take a alias)
+    cm := concurrentMap.CreateConcurrentMap(32)
 
-    // Add or Update for map
+    // add or update for map
     cm.Set(ConvertStr("hello"), "go")
 
     // get kv from map
