@@ -7,8 +7,14 @@ go get "github.com/xiao7737/concurrentMap"
 ### Usage
 ```
     cm := CreateConcurrentMap(32)
+
+    // Add or Update for map
     cm.Set(ConvertStr("hello"), "go")
+
+    // get kv from map
     res, ok := cm.Get(ConvertStr("hello"))   
+
+    // del kv
     cm.Del(ConvertStr("hello"))
 ```
 

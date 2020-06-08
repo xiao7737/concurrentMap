@@ -15,8 +15,7 @@ type shardMap struct {
 	lock sync.RWMutex
 }
 
-// interface of key, compatible with string and int key
-//
+// interface of key
 type PartitionKey interface {
 	Value() interface{}
 	PartitionKey() int64
@@ -78,6 +77,7 @@ func CreateConcurrentMap(numOfShard int) *ConcurrentMap {
 }
 
 // Set is to set kv
+// Set the same key, the new value will overwrite the old value
 func (m *ConcurrentMap) Set(key PartitionKey, value interface{}) {
 	shardMap := m.getShard(key)
 	shardMap.set(key, value)
@@ -90,6 +90,7 @@ func (m *ConcurrentMap) Get(key PartitionKey) (value interface{}, exists bool) {
 }
 
 // Del is to delete the key
+// There will be no prompt to delete a key that is not in a map
 func (m *ConcurrentMap) Del(key PartitionKey) {
 	shardMap := m.getShard(key)
 	shardMap.del(key)
@@ -110,5 +111,3 @@ func (m *ConcurrentMap) Exists(key PartitionKey) (exists bool) {
 	_, exists = shardMap.get(key)
 	return
 }
-
-// 测试文件 + 对比效果
