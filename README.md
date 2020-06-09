@@ -21,7 +21,7 @@ go get "github.com/xiao7737/concurrentMap"
 
 
 ### Performance comparison with sync.Map
-![image](https://github.com/xiao7737/concurrentMap/blob/master/bench.png) {:height="100px" width="400px"}
+![image](https://github.com/xiao7737/concurrentMap/blob/master/bench.png){:height="100px" width="400px"}
 
 ### More details
  -  See more details through test file: [concurrent_map_test.go](https://github.com/xiao7737/concurrentMap/blob/master/concurrent_map_test.go)   
