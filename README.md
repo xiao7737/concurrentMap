@@ -9,13 +9,13 @@ go get "github.com/xiao7737/concurrentMap"
     // Init map (recommend to take a alias)
     cm := concurrentMap.CreateConcurrentMap(32)
 
-    // add or update for map
+    // Add or update
     cm.Set(ConvertStr("hello"), "go")
 
-    // get kv from map
+    // Get kv
     res, ok := cm.Get(ConvertStr("hello"))   
 
-    // del kv
+    // Del kv
     cm.Del(ConvertStr("hello"))
 ```
 
@@ -24,4 +24,6 @@ go get "github.com/xiao7737/concurrentMap"
 ![image](https://github.com/xiao7737/concurrentMap/blob/master/bench.png) 
 
 ### More details
-> See more details through test file: [concurrent_map_test.go](https://github.com/xiao7737/concurrentMap/blob/master/concurrent_map_test.go)
+ -  See more details through test file: [concurrent_map_test.go](https://github.com/xiao7737/concurrentMap/blob/master/concurrent_map_test.go)   
+ -  Get performance comparison:   
+ ```go test -bench.```
