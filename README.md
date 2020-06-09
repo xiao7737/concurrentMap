@@ -26,4 +26,4 @@ go get "github.com/xiao7737/concurrentMap"
 ### More details
  -  See more details through test file: [concurrent_map_test.go](https://github.com/xiao7737/concurrentMap/blob/master/concurrent_map_test.go)   
  -  Get performance comparison:   
- ```go test -bench.```
+ ```go test -bench=.```
