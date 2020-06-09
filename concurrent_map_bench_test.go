@@ -7,39 +7,61 @@ import (
 )
 
 func BenchmarkConcurrentMap_Set(b *testing.B) {
-	var sm sync.Map
+	cm := CreateConcurrentMap(32)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		sm.Store(strconv.Itoa(i), i)
+		go cm.Set(ConvertStr(strconv.Itoa(i)), "test")
 	}
 }
 
 func BenchmarkSyncMap_Store(b *testing.B) {
-	cm := CreateConcurrentMap(32)
+	var sm sync.Map
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		cm.Set(ConvertStr(strconv.Itoa(i)), i)
+		go sm.Store(strconv.Itoa(i), "test")
 	}
 }
 
 func BenchmarkConcurrentMap_Get(b *testing.B) {
-	var sm sync.Map
+	cm := CreateConcurrentMap(32)
 	for i := 0; i < b.N; i++ {
-		sm.Store(strconv.Itoa(i), i)
+		go cm.Set(ConvertStr(strconv.Itoa(i)), "test")
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		sm.Load(strconv.Itoa(i))
+		go cm.Get(ConvertStr(strconv.Itoa(i)))
 	}
 }
 
 func BenchmarkSyncMap_Load(b *testing.B) {
-	cm := CreateConcurrentMap(32)
+	var sm sync.Map
 	for i := 0; i < b.N; i++ {
-		cm.Set(ConvertStr(strconv.Itoa(i)), i)
+		go sm.Store(strconv.Itoa(i), "test")
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		cm.Get(ConvertStr(strconv.Itoa(i)))
+		go sm.Load(strconv.Itoa(i))
+	}
+}
+
+func BenchmarkConcurrentMap_Del(b *testing.B) {
+	cm := CreateConcurrentMap(32)
+	for i := 0; i < b.N; i++ {
+		go cm.Set(ConvertStr(strconv.Itoa(i)), "test")
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		go cm.Del(ConvertStr(strconv.Itoa(i)))
+	}
+}
+
+func BenchmarkSyncMap_Delete(b *testing.B) {
+	var sm sync.Map
+	for i := 0; i < b.N; i++ {
+		go sm.Store(strconv.Itoa(i), i)
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		go sm.Delete(strconv.Itoa(i))
 	}
 }
