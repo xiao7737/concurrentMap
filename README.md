@@ -6,7 +6,7 @@ go get "github.com/xiao7737/concurrentMap"
 ```
 ### Usage
 ```
-    // Init map (recommend to take a alias)
+    // Init map (recommend to take an alias)
     cm := concurrentMap.CreateConcurrentMap(32)
 
     // Add or update
