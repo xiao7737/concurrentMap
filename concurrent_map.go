@@ -62,6 +62,8 @@ func (s *shardMap) count() (count int) {
 }
 
 // get the shard for key
+// routing algorithm：shard = hash(routing_key) % number_of_shards
+// similar to redis-cluster and es
 func (m *ConcurrentMap) getShard(key PartitionKey) *shardMap {
 	shardIndex := key.PartitionKey() % (int64(m.numOfShard))
 	return m.shard[shardIndex]
