@@ -3,7 +3,7 @@
 ### Features
  - sharding mechanism to reduce lock range
  - read-write lock to improve concurrency
- - murmurhash to make the distribution more reasonable
+ - murmurHash to make the distribution more reasonable
  - support user program to customize the number of shard
  - provide operations including create, get, set, del, count, exists 
  
