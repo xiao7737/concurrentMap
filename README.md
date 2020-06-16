@@ -1,6 +1,7 @@
 # concurrentMap
 
 ### Features
+ - thread safe and high performance read and write
  - sharding mechanism to reduce lock range
  - read-write lock to improve concurrency
  - murmurHash to make the distribution more reasonable
