@@ -31,7 +31,11 @@ go get "github.com/xiao7737/concurrentMap"
 ### Performance comparison with sync.Map
 ![image](https://github.com/xiao7737/concurrentMap/blob/master/bench.png)
 
+### TODO
+ - Batch setting operation
+ 
 ### More details
  -  See more details through test file: [concurrent_map_test.go](https://github.com/xiao7737/concurrentMap/blob/master/concurrent_map_test.go)   
  -  Get performance comparison:   
  ```go test -bench=.```
+
