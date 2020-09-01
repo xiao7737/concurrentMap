@@ -70,6 +70,7 @@ func (m *ConcurrentMap) getShard(key PartitionKey) *shardMap {
 }
 
 // CreateConcurrentMap is to create a Map with number entered by the user
+//todo 切换成New的方式
 func CreateConcurrentMap(numOfShard int) *ConcurrentMap {
 	var shard []*shardMap
 	for i := 0; i < numOfShard; i++ {
